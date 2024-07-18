@@ -87,6 +87,21 @@ class StateTests(unittest.TestCase):
         self.assertTrue(state.is_solved)
         self.assertEqual(0, len(state.valid_moves))
 
+    def test_valid_move_to_empty(self):
+        state = State(
+            np.array(
+                [
+                    [Color.RED, Color.GREEN, Color.GREEN, Color.GREEN],
+                    [Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY],
+                    [Color.RED, Color.RED, Color.RED, Color.GREEN],
+                ],
+            ),
+        )
+        self.assertEqual((3, 4), state.flask_state.shape)
+        self.assertTrue(state.is_valid)
+        self.assertFalse(state.is_solved)
+        self.assertEqual(2, len(state.valid_moves))
+
     def test_step(self):
         state = State(
             np.array(

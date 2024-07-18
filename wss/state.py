@@ -92,7 +92,7 @@ class State:
                 if src_flask_idx == dst_flask_idx:
                     continue
                 # determine dst_color and available_space
-                dst_color = None
+                dst_color = Color.EMPTY
                 available_space = 0
                 for dst_section_idx in range(self.num_sections):
                     cur_color = self.flask_state[dst_flask_idx, self.num_sections - 1 - dst_section_idx]
@@ -102,10 +102,11 @@ class State:
                     dst_color = cur_color
                     break
                 # checks
-                if dst_color != src_color:
-                    continue
-                if available_space < required_space:
-                    continue
+                if dst_color != Color.EMPTY:
+                    if dst_color != src_color:
+                        continue
+                    if available_space < required_space:
+                        continue
 
                 moves.append((src_flask_idx, dst_flask_idx))
         return moves
@@ -159,7 +160,7 @@ class State:
             break
 
         # sanity check
-        assert src_color == dst_color
+        assert dst_color == Color.EMPTY or src_color == dst_color
         assert required_space <= available_space
 
         # remove water from src_flask
